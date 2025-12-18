@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.12a2](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a2) (2025-12-18)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a1...0.2.12a2)
+
+**Merged pull requests:**
+
+- Configure Renovate [\#46](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/46) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.2.12a1](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a1) (2025-07-12)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.11...0.2.12a1)
