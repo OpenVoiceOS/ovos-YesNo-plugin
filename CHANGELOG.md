@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.2.12a4](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a4) (2025-12-19)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a3...0.2.12a4)
+
+**Merged pull requests:**
+
+- Update dependency python to 3.14 [\#47](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/47) ([renovate[bot]](https://github.com/apps/renovate))
+
 ## [0.2.12a3](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a3) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a2...0.2.12a3)
