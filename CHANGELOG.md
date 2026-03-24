@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.2.13a1](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.13a1) (2026-03-24)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a5...0.2.13a1)
+
+**Merged pull requests:**
+
+- fix: rename bare lang code locale directories [\#57](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/57) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
+- Improve French yes/no solver coverage [\#56](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/56) ([goldyfruit](https://github.com/goldyfruit))
+
 ## [0.2.12a5](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a5) (2025-12-19)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a4...0.2.12a5)
