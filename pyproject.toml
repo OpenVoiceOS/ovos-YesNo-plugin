@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "ovos-yes-no-plugin"
 description = "A yes/no answer parser for OpenVoiceOS"
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "Apache2.0"}
 authors = [
     {name = "jarbasai", email = "jarbasai@mailfence.com"}
 ]
