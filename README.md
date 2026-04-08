@@ -1,7 +1,51 @@
 # ovos-yes-no-plugin
 
-A heuristic yes/no answer parser for [OpenVoiceOS](https://openvoiceos.org).
-Classifies a spoken or typed response as **yes** (`True`), **no** (`False`), or **neutral/unclear** (`None`).
+[![PyPI version](https://badge.fury.io/py/ovos-yes-no-plugin.svg)](https://badge.fury.io/py/ovos-yes-no-plugin)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Build Tests](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/actions/workflows/build-tests.yml/badge.svg)](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/actions/workflows/build-tests.yml)
+
+A heuristic yes/no answer classifier for [OpenVoiceOS](https://openvoiceos.org).
+
+Given a question and a spoken or typed response, it returns `True` (yes), `False` (no), or `None` (unclear). It handles common variants (`yeah`, `sure`, `nah`), double negatives (`not a lie` → yes), and language-specific word lists for 20+ locales.
+
+## Role in OVOS
+
+OVOS skills ask yes/no questions through `OVOSSkill.ask_yesno()` in
+[ovos-workshop](https://github.com/OpenVoiceOS/ovos-workshop):
+
+```python
+# ovos_workshop/skills/ovos.py
+def ask_yesno(self, prompt: str, data=None) -> Optional[str]:
+    resp = self.get_response(dialog=prompt, data=data)
+    engine = self._get_yesno_engine()
+    answer = engine.yes_or_no(question=prompt, response=resp, lang=self.lang)
+    if answer is True:
+        return "yes"
+    elif answer is False:
+        return "no"
+    else:
+        return resp   # pass-through when answer is ambiguous
+```
+
+`_get_yesno_engine()` loads the plugin named `ovos-yes-no-plugin` by
+default. This package provides that plugin. The active engine can be overridden
+per-skill in `settings.json` or system-wide in `mycroft.conf`:
+
+```json
+# mycroft.conf
+{
+  "skills": {
+    "ask_yesno_plugin": "ovos-yes-no-plugin"
+  }
+}
+```
+
+```json
+# skill settings.json  (overrides the system default for this skill only)
+{
+  "ask_yesno_plugin": "my-custom-yesno-plugin"
+}
+```
 
 ## Install
 
@@ -9,38 +53,53 @@ Classifies a spoken or typed response as **yes** (`True`), **no** (`False`), or 
 pip install ovos-yes-no-plugin
 ```
 
-## Quick Start
+## Usage
+
+### Inside an OVOS skill
+
+```python
+class MySkill(OVOSSkill):
+    def handle_intent(self, message):
+        answer = self.ask_yesno("confirm.action")  # plays TTS, waits for reply
+        if answer == "yes":
+            self.speak_dialog("confirmed")
+        elif answer == "no":
+            self.speak_dialog("cancelled")
+        else:
+            self.speak_dialog("didnt.understand")
+```
+
+`ask_yesno` returns `"yes"`, `"no"`, or the raw utterance when the engine
+returns `None`.
+
+### Direct use
 
 ```python
 from ovos_yes_no import HeuristicYesNoEngine
 
 engine = HeuristicYesNoEngine()
-
-engine.yes_or_no("Do you want to continue?", "yes", "en-us")        # True
-engine.yes_or_no("Do you want to continue?", "no way", "en-us")     # False
-engine.yes_or_no("Do you want to continue?", "beans", "en-us")      # None
-engine.yes_or_no("Do you want to continue?", "it's not a lie", "en-us")  # True (double negative)
+engine.yes_or_no("Do you want to continue?", "yes", "en-us")          # True
+engine.yes_or_no("Do you want to continue?", "no way", "en-us")       # False
+engine.yes_or_no("Do you want to continue?", "beans", "en-us")        # None
+engine.yes_or_no("Do you want to continue?", "it's not a lie", "en-us")  # True  (double negative)
 engine.yes_or_no("Do you want to continue?", "yes, but actually, no", "en-us")  # False (last word wins)
 ```
 
-## OVOS Integration
-
-The plugin registers under the `opm.agents.yesno` entry-point group with the key
-`ovos-yes-no-plugin`. OVOS and `ovos-plugin-manager` will load it automatically when
-a `YesNoEngine` is requested.
+### Via ovos-plugin-manager
 
 ```python
-from ovos_plugin_manager.agents import get_yesno_plugin
+from ovos_plugin_manager.agents import load_yesno_plugin
 
-engine = get_yesno_plugin("ovos-yes-no-plugin")
+cls = load_yesno_plugin("ovos-yes-no-plugin")
+engine = cls()
 result = engine.yes_or_no("Shall I set a reminder?", "please do", "en-us")  # True
 ```
 
 ## Configuration
 
-No mandatory configuration. An optional `config` dict is accepted by the constructor
-and passed through to the base class — the only supported key is `lang` (the default
-language to use when `yes_or_no` is called without an explicit `lang` argument).
+No mandatory configuration. An optional `config` dict is accepted by the
+constructor. The only supported key is `lang`, which sets the default language
+when `yes_or_no` is called without an explicit `lang` argument:
 
 ```python
 engine = HeuristicYesNoEngine(config={"lang": "de-de"})
@@ -48,58 +107,58 @@ engine = HeuristicYesNoEngine(config={"lang": "de-de"})
 
 ## Algorithm
 
-`HeuristicYesNoEngine.yes_or_no` — `ovos_yes_no/__init__.py:71`
+Source: `HeuristicYesNoEngine.yes_or_no` — `ovos_yes_no/__init__.py:71`
 
-The engine scans the normalised response for words listed in a per-language
-`locale/<lang>/yesno.json` resource file. The file defines four word lists:
+The engine scans the normalised response against a per-language
+`locale/<lang>/yesno.json` resource file containing four word lists:
 
 | Key | Role |
 |---|---|
-| `yes` | Unambiguous affirmatives: `yes`, `yeah`, `affirmative`, … |
-| `no` | Unambiguous negatives: `no`, `nah`, `disagree`, … |
-| `neutral_yes` | Soft affirmatives counted only when no `no` word is present: `sure`, `please`, … |
-| `neutral_no` | Soft negatives counted only when no `yes` word is present: `wrong`, `mistake`, `lie`, … |
+| `yes` | Unambiguous affirmatives: `yes`, `yeah`, `affirmative`, ... |
+| `no` | Unambiguous negatives: `no`, `nah`, `disagree`, ... |
+| `neutral_yes` | Soft affirmatives counted only when no `no` word is present: `sure`, `please`, ... |
+| `neutral_no` | Soft negatives counted only when no `yes` word is present: `wrong`, `mistake`, `lie`, ... |
 
 Decision rules (in order):
 
-1. **Last word wins.** When both a `yes` word and a `no` word appear, the one at the
-   higher character index is taken as the user's final intent.
-2. **Double negatives.** A `no`-category word immediately followed by a `neutral_no`
-   word (e.g., `not` + `lie` → `"not a lie"`) is interpreted as affirmative.
-3. **Neutral words.** If neither a `yes` nor a `no` word was found, `neutral_yes` and
-   `neutral_no` words are considered as weak signals.
+1. **Last word wins.** When both a `yes` word and a `no` word appear, the one
+   at the higher character index is taken as the user's final intent.
+2. **Double negatives.** A `no`-category word immediately followed by a
+   `neutral_no` word (e.g., `not` + `lie` → `"not a lie"`) is interpreted as
+   affirmative.
+3. **Neutral words.** If neither a `yes` nor a `no` word was found,
+   `neutral_yes` and `neutral_no` words are considered as weak signals.
 4. **Default.** No recognised word → return `None`.
 
-Language matching uses `langcodes.tag_distance` to find the closest available locale,
-so `en-AU` silently falls back to `en-US`.
+Language matching uses `langcodes.tag_distance` to find the closest available
+locale, so `en-AU` silently falls back to `en-US`.
 
 ## Supported Languages
-
-The bundled `locale/` directory contains resource files for:
 
 `an`, `az`, `ca-ES`, `cs-CZ`, `da-DK`, `de-DE`, `en-US`, `es-ES`, `eu-ES`,
 `fa-IR`, `fr-FR`, `hu-HU`, `it-IT`, `nl-NL`, `pl-PL`, `pt-BR`, `ru-RU`,
 `sv-SE`, `tr-TR`, `uk-UA`
 
-## Adding a New Language
+## Adding a Language
 
-Create `ovos_yes_no/locale/<lang-TAG>/yesno.json` with the four word lists described
-above. Phrase selection tips:
+Create `ovos_yes_no/locale/<lang-TAG>/yesno.json` with the four word lists
+described above:
 
-- `neutral_yes`: mild agreement words that are positive but not direct synonyms of
-  "yes" (e.g., French `"bien sur"`, Portuguese `"claro"`).
-- `neutral_no`: words that imply disapproval indirectly (e.g., French `"mensonge"`,
-  Portuguese `"errado"`).
-- Double-negative structures vary widely between languages — test them explicitly.
+- `neutral_yes`: mild agreement words that are positive but not direct synonyms
+  of "yes" (e.g., French `"bien sur"`, Portuguese `"claro"`).
+- `neutral_no`: words that imply disapproval indirectly (e.g., French
+  `"mensonge"`, Portuguese `"errado"`).
+- Double-negative structures vary widely between languages — test them
+  explicitly.
 
 ## Limitations
 
 - No sarcasm or idiom detection.
-- Vocabulary is limited to the words in the resource files; slang not listed will be
+- Vocabulary is limited to the words in the resource files; unlisted slang is
   ignored.
 - Complex nested negations beyond one level may yield incorrect results.
-- Missing or incomplete resource files cause the engine to return `None` for that
-  language rather than raising an error.
+- Missing or incomplete resource files cause the engine to return `None` for
+  that language rather than raising an error.
 
 ## License
 
