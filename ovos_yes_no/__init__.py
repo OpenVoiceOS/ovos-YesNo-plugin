@@ -39,13 +39,9 @@ class HeuristicYesNoEngine(YesNoEngine):
         if lang.startswith("en"):
             text = text.replace("don't", "do not")
 
-        stopwords = ["the"]
-        if lang.startswith("pt"):
-            stopwords = ["esta", "está", "estás", "é", "de", "com", "são"]
-        words = [w for w in word_tokenize(text) if w not in stopwords]
-        return " ".join(words)
+        return " ".join(word_tokenize(text))
 
-    def _match_lang(self, lang: str) -> Optional[str]:
+    def _match_lang(self, lang: str) -> str:
         """Find the best matching language in self.resources.
 
         Args:
@@ -79,10 +75,8 @@ class HeuristicYesNoEngine(YesNoEngine):
         Returns:
             True if response indicates yes, False if no, None if neutral/unclear
         """
-        lang = lang or "en-us"
+        lang = lang or "en-US"
         lang = self._match_lang(lang)
-        if lang is None:
-            return None
         text = self.normalize(response, lang)
 
         # if user says yes but later says no, he changed his mind mid-sentence
@@ -111,15 +105,18 @@ class HeuristicYesNoEngine(YesNoEngine):
             if idx >= best:
                 best = idx
 
-                # Handle double negatives (e.g., "not a lie")
-                double_negatives = [
-                    f"{match.group()} {neutral}"
-                    for neutral in self.resources[lang].get("neutral_no", [])
-                ]
-                for pattern in double_negatives:
-                    if re.search(re.escape(pattern), text):
-                        res = True
+                # Handle double negatives (e.g., "not a lie", "not lying")
+                # Use a proximity pattern: no-word followed by neutral_no within
+                # 5 tokens, allowing connective words between them.
+                no_word = re.escape(match.group())
+                double_neg = False
+                for neutral in self.resources[lang].get("neutral_no", []):
+                    pattern = rf"\b{no_word}\b(?:\s+\S+){{0,1}}\s+\b{re.escape(neutral)}\b"
+                    if re.search(pattern, text):
+                        double_neg = True
                         break
+                if double_neg:
+                    res = True
                 else:
                     res = False
 
