@@ -40,14 +40,14 @@ Repository = "https://github.com/OpenVoiceOS/ovos-YesNo-plugin"
 Issues = "https://github.com/OpenVoiceOS/ovos-YesNo-plugin/issues"
 
 [project.entry-points."opm.agents.yesno"]
-"ovos-yes-no-plugin" = "ovos_yes_no_solver:HeuristicYesNoEngine"
+"ovos-yes-no-plugin" = "ovos_yes_no:HeuristicYesNoEngine"
 
 [tool.setuptools]
 include-package-data = true
-packages = ["ovos_yes_no_solver"]
+packages = ["ovos_yes_no"]
 
 [tool.setuptools.dynamic]
-version = {attr = "ovos_yes_no_solver.version.__version__"}
+version = {attr = "ovos_yes_no.version.__version__"}
 
 [tool.setuptools.package-data]
-ovos_yes_no_solver = ["locale/*/yesno.json"]
+ovos_yes_no = ["locale/*/yesno.json"]

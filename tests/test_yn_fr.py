@@ -2,7 +2,7 @@ import json
 import os.path
 import unittest
 
-from ovos_yes_no_solver import HeuristicYesNoEngine
+from ovos_yes_no import HeuristicYesNoEngine
 
 
 class TestYesNoFrench(unittest.TestCase):

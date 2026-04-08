@@ -15,7 +15,7 @@ pip install ovos-yes-no-plugin
 Standalone usage examples from unittests
 
 ```python
-from ovos_yes_no_solver import HeuristicYesNoEngine
+from ovos_yes_no import HeuristicYesNoEngine
 
 engine = HeuristicYesNoEngine()
 

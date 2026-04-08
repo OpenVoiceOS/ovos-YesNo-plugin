@@ -10,7 +10,7 @@ jobs:
     secrets: inherit
     with:
       branch: 'master'
-      version_file: 'ovos_yes_no_solver/version.py'
+      version_file: 'ovos_yes_no/version.py'
       setup_py: 'setup.py'
       publish_release: true
 

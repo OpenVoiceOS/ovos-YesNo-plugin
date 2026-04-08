@@ -1,7 +1,7 @@
 import os.path
 import unittest
 import json
-from ovos_yes_no_solver import HeuristicYesNoEngine
+from ovos_yes_no import HeuristicYesNoEngine
 
 
 class TestYesNoPT(unittest.TestCase):

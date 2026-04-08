@@ -11,7 +11,7 @@ jobs:
     secrets: inherit
     with:
       python_version: '3.11'
-      coverage_source: 'ovos_solver_yes_no_plugin'
+      coverage_source: 'ovos-yes-no-plugin'
       test_path: 'test/'
       install_extras: ''
       min_coverage: 0
