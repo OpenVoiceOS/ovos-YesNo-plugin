@@ -1,24 +1,33 @@
 import json
 import os.path
 import re
-from typing import Optional
-from ovos_bus_client.session import SessionManager
-from langcodes import closest_match
-from ovos_plugin_manager.templates.solvers import QuestionSolver
+from typing import Optional, List
+from ovos_plugin_manager.templates.agents import YesNoEngine
+from ovos_utils.lang import standardize_lang_tag
 from quebra_frases import word_tokenize
 
 
-class YesNoSolver(QuestionSolver):
-    """not meant to be used within persona framework
-    this solver only indicates if the user answered "yes" or "no"
-    to a yes/no prompt"""
-    enable_tx = False
-    priority = 100
+def _candidate_langs(lang: str) -> List[str]:
+    """Return locale directories to try in priority order."""
+    return [lang, lang.split("-")[0], "en-us"]
 
+
+class HeuristicYesNoEngine(YesNoEngine):
+    """
+    Engine for evaluating answers to yes/no questions.
+
+    Determines if a user input means "yes", "no" or undefined
+    """
     def __init__(self, config=None):
-        config = config or {}
-        self.resources = {}
         super().__init__(config)
+        locale = f"{os.path.dirname(__file__)}/locale"
+        self.resources = {}
+        for lang in os.listdir(locale):
+            fname = f"{locale}/{lang}/yesno.json"
+            if os.path.isfile(fname):
+                with open(fname) as f:
+                    lang = standardize_lang_tag(lang)
+                    self.resources[lang] = json.load(f)
 
     @staticmethod
     def normalize(text: str, lang: str):
@@ -39,22 +48,19 @@ class YesNoSolver(QuestionSolver):
         words = [w for w in word_tokenize(text) if w not in stopwords]
         return " ".join(words)
 
-    def match_yes_or_no(self, text: str, lang: str):
-        _langs = os.listdir(f"{os.path.dirname(__file__)}/res")
-        lang2, lang_distance = closest_match(lang, _langs)
-        if lang_distance > 10:  # unsupported lang, use translation and hope for the best
-            text = self.translate(text, target_lang="en", source_lang=lang)
-            return self.match_yes_or_no(text, "en")
-
-        lang = lang2
+    def yes_or_no(self, question: str, response: str, lang: Optional[str] = None) -> Optional[bool]:
+        """
+        True: user answered yes
+        False: user answered no
+        None: invalid/neutral answer
+        """
+        lang = lang or "en-us"
+        lang = standardize_lang_tag(lang)
 
         if lang not in self.resources:
-            resource_file = f"{os.path.dirname(__file__)}/res/{lang}/yesno.json"
-            with open(resource_file) as f:
-                words = json.load(f)
-                self.resources[lang] = {k: [_.lower() for _ in v] for k, v in words.items()}
+            return None
 
-        text = self.normalize(text, lang)
+        text = self.normalize(response, lang)
 
         # if user says yes but later says no, he changed his mind mid-sentence
         # the highest index is the last yesno word
@@ -113,29 +119,8 @@ class YesNoSolver(QuestionSolver):
         # False - no
         return res
 
-    # abstract Solver methods
-    def get_spoken_answer(self, query: str,
-                          lang: Optional[str] = None,
-                          units: Optional[str] = None) -> Optional[str]:
-        """
-        Obtain the spoken answer for a given query.
-
-        Args:
-            query (str): The query text.
-            lang (Optional[str]): Optional language code. Defaults to None.
-            units (Optional[str]): Optional units for the query. Defaults to None.
-
-        Returns:
-            str: The spoken answer as a text response.
-        """
-        lang = lang or SessionManager.get().lang
-        res = self.match_yes_or_no(query, lang)
-        if res is None:
-            return None
-        return "yes" if res else "no"
-
 
 if __name__ == "__main__":
     cfg = {}
-    bot = YesNoSolver(config=cfg)
-    print(bot.get_spoken_answer("disagree"))
+    bot = HeuristicYesNoEngine(config=cfg)
+    print(bot.yes_or_no("The sun is blue", "disagree"))
