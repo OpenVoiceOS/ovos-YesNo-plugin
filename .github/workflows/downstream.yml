@@ -8,7 +8,7 @@ on:
   workflow_dispatch:  # Allows manual triggering
 
 env:
-  TARGET_PACKAGE: "ovos-solver-yes-no-plugin"  # Set the package to track here
+  TARGET_PACKAGE: "ovos-yes-no-plugin"  # Set the package to track here
 
 jobs:
   check-dependencies:

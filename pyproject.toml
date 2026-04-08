@@ -1,0 +1,53 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ovos-yes-no-plugin"
+description = "A yes/no answer parser for OpenVoiceOS"
+readme = "README.md"
+license = {text = "Apache-2.0"}
+authors = [
+    {name = "jarbasai", email = "jarbasai@mailfence.com"}
+]
+keywords = ["OVOS", "OpenVoiceOS", "plugin", "solver", "yesno", "agent"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License"
+]
+requires-python = ">=3.8"
+dependencies = [
+    "ovos-plugin-manager>=2.4.0a1,<3.0.0",
+    "ovos-utils",
+    "quebra-frases",
+    "ovos-bus-client",
+    "langcodes"
+]
+dynamic = ["version"]
+
+[project.optional-dependencies]
+test = [
+    "coveralls>=1.8.2",
+    "flake8>=3.7.9",
+    "pytest>=5.2.4",
+    "pytest-cov>=2.8.1",
+    "cov-core>=1.15.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/OpenVoiceOS/ovos-YesNo-plugin"
+Repository = "https://github.com/OpenVoiceOS/ovos-YesNo-plugin"
+Issues = "https://github.com/OpenVoiceOS/ovos-YesNo-plugin/issues"
+
+[project.entry-points."opm.agents.yesno"]
+"ovos-yes-no-plugin" = "ovos_yes_no:HeuristicYesNoEngine"
+
+[tool.setuptools]
+include-package-data = true
+packages = ["ovos_yes_no"]
+
+[tool.setuptools.dynamic]
+version = {attr = "ovos_yes_no.version.__version__"}
+
+[tool.setuptools.package-data]
+ovos_yes_no = ["locale/*/yesno.json"]
