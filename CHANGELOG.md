@@ -1,66 +1,12 @@
 # Changelog
 
-## [0.2.13a2](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.13a2) (2026-04-07)
+## [Unreleased](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/HEAD)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.13a1...0.2.13a2)
-
-**Merged pull requests:**
-
-- translate\(an\): update yesno.resource\_json [\#58](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/58) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
-
-## [0.2.13a1](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.13a1) (2026-03-24)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a5...0.2.13a1)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/8a36d59d4d771b336ead672d8341539802197c32...HEAD)
 
 **Merged pull requests:**
 
-- fix: rename bare lang code locale directories [\#57](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/57) ([ovos-localize[bot]](https://github.com/apps/ovos-localize))
-- Improve French yes/no solver coverage [\#56](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/56) ([goldyfruit](https://github.com/goldyfruit))
-
-## [0.2.12a5](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a5) (2025-12-19)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a4...0.2.12a5)
-
-**Closed issues:**
-
-- Action Required: Fix Renovate Configuration [\#55](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/issues/55)
-- Action Required: Fix Renovate Configuration [\#54](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/issues/54)
-
-**Merged pull requests:**
-
-- Update dependency ovos-plugin-manager to v2 [\#52](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/52) ([renovate[bot]](https://github.com/apps/renovate))
-
-## [0.2.12a4](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a4) (2025-12-19)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a3...0.2.12a4)
-
-**Merged pull requests:**
-
-- Update dependency python to 3.14 [\#47](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/47) ([renovate[bot]](https://github.com/apps/renovate))
-
-## [0.2.12a3](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a3) (2025-12-19)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a2...0.2.12a3)
-
-**Merged pull requests:**
-
-- Update actions/setup-python action to v6 [\#51](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/51) ([renovate[bot]](https://github.com/apps/renovate))
-
-## [0.2.12a2](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a2) (2025-12-18)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.12a1...0.2.12a2)
-
-**Merged pull requests:**
-
-- Configure Renovate [\#46](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/46) ([renovate[bot]](https://github.com/apps/renovate))
-
-## [0.2.12a1](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/tree/0.2.12a1) (2025-07-12)
-
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/compare/0.2.11...0.2.12a1)
-
-**Merged pull requests:**
-
-- adding missing German translations [\#44](https://github.com/OpenVoiceOS/ovos-solver-YesNo-plugin/pull/44) ([gitlocalize-app[bot]](https://github.com/apps/gitlocalize-app))
+- feat: modernize YesNo plugin to current OVOS standards [\#1](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/pull/1) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
