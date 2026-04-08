@@ -47,7 +47,7 @@
     "mitnichten",
     "mit nichten",
     "unmöglich",
-    "nichts da", 
+    "nichts da",
     "weit gefehlt"
   ],
   "neutral_yes": [
@@ -74,6 +74,5 @@
     "lügst",
     "gelogen",
     "schlecht"
-  ],
-  "stopwords": []
+  ]
 }

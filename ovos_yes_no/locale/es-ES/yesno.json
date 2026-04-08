@@ -10,6 +10,7 @@
     "negativo",
     "nah"
   ],
-  "neutral_yes": ["por favor"],
-  "stopwords": []
+  "neutral_yes": [
+    "por favor"
+  ]
 }

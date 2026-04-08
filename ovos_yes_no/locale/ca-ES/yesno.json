@@ -40,6 +40,5 @@
     "(error|errors|errada|errades|equivocació|equivocacions)",
     "(equivocat|equivocada|equivocats|equivocades|errat|errada|errats|errades)",
     "(incorrecte|incorrecta|incorrectes)"
-  ],
-  "stopwords": []
+  ]
 }
