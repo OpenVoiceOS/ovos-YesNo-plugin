@@ -50,5 +50,6 @@
     "erro",
     "errado",
     "errada"
-  ]
+  ],
+  "stopwords": ["esta", "está", "estás", "é", "de", "com", "são"]
 }

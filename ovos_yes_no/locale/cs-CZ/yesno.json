@@ -10,5 +10,6 @@
   "no": [
     "nechci",
     "ne"
-  ]
+  ],
+  "stopwords": []
 }

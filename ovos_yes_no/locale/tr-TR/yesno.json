@@ -8,5 +8,6 @@
     "hayır",
     "yok",
     "olumsuz"
-  ]
+  ],
+  "stopwords": []
 }

@@ -40,5 +40,6 @@
     "Errore",
     "Stai sbagliando",
     "Sbagliato"
-  ]
+  ],
+  "stopwords": []
 }

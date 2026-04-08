@@ -40,5 +40,6 @@
     "ik heb me vergist",
     "Neuh",
     "fout"
-  ]
+  ],
+  "stopwords": []
 }

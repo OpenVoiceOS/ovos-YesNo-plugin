@@ -74,5 +74,6 @@
     "lügst",
     "gelogen",
     "schlecht"
-  ]
+  ],
+  "stopwords": []
 }

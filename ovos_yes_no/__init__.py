@@ -27,7 +27,7 @@ class HeuristicYesNoEngine(YesNoEngine):
                     self.resources[lang] = json.load(f)
 
     @staticmethod
-    def normalize(text: str, lang: str):
+    def normalize(text: str, lang: str, stopwords=None):
         # Remove single characters surrounded by spaces
         text = re.sub(r'\s+[a-zA-Z]\s+', ' ', text)
         # Replace multiple spaces with a single space
@@ -39,10 +39,7 @@ class HeuristicYesNoEngine(YesNoEngine):
         if lang.startswith("en"):
             text = text.replace("don't", "do not")
 
-        stopwords = ["the"]
-        if lang.startswith("pt"):
-            stopwords = ["esta", "está", "estás", "é", "de", "com", "são"]
-        words = [w for w in word_tokenize(text) if w not in stopwords]
+        words = [w for w in word_tokenize(text) if w not in (stopwords or [])]
         return " ".join(words)
 
     def _match_lang(self, lang: str) -> Optional[str]:
@@ -79,11 +76,12 @@ class HeuristicYesNoEngine(YesNoEngine):
         Returns:
             True if response indicates yes, False if no, None if neutral/unclear
         """
-        lang = lang or "en-us"
+        lang = lang or "en-US"
         lang = self._match_lang(lang)
         if lang is None:
             return None
-        text = self.normalize(response, lang)
+        stopwords = self.resources[lang].get("stopwords", [])
+        text = self.normalize(response, lang, stopwords=stopwords)
 
         # if user says yes but later says no, he changed his mind mid-sentence
         # the highest index is the last yesno word

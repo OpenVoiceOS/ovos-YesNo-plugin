@@ -29,5 +29,6 @@
     "error",
     "falso",
     "entivocau"
-  ]
+  ],
+  "stopwords": []
 }

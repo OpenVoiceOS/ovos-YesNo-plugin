@@ -39,5 +39,6 @@
     "mistake",
     "mistaken",
     "wrong"
-  ]
+  ],
+  "stopwords": ["the"]
 }
