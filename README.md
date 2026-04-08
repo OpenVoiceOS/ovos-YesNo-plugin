@@ -7,7 +7,7 @@ A simple tool to indicate whether a user answered "yes" or "no" to a yes/no prom
 ## 📥 Install
 
 ```bash
-pip install ovos-solver-yes-no-plugin
+pip install ovos-yes-no-plugin
 ```
 
 ## Usage
@@ -15,12 +15,12 @@ pip install ovos-solver-yes-no-plugin
 Standalone usage examples from unittests
 
 ```python
-from ovos_yes_no_solver import YesNoSolver
+from ovos_yes_no_solver import HeuristicYesNoEngine
 
-solver = YesNoSolver()
+engine = HeuristicYesNoEngine()
 
 def test_utt(text, expected):
-    res = solver.match_yes_or_no(text, "en-us")
+    res = engine.yes_or_no("question", text, "en-us")
     return res == expected
 
 test_utt("yes", True)
