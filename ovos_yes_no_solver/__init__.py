@@ -1,16 +1,12 @@
 import json
 import os.path
 import re
-from typing import Optional, List
+from typing import Optional
+
+from langcodes import tag_distance
 from ovos_plugin_manager.templates.agents import YesNoEngine
 from ovos_utils.lang import standardize_lang_tag
-from langcodes import tag_distance
 from quebra_frases import word_tokenize
-
-
-def _candidate_langs(lang: str) -> List[str]:
-    """Return locale directories to try in priority order."""
-    return [lang, lang.split("-")[0], "en-us"]
 
 
 class HeuristicYesNoEngine(YesNoEngine):
