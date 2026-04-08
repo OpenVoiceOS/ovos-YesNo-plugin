@@ -43,7 +43,7 @@ class TestYesNo(unittest.TestCase):
         self.assertEqual(res_au, res_us, "en-AU should fall back to en-us")
 
     def test_unsupported_language(self):
-        """Test that truly unsupported languages raise ValueError."""
-        with self.assertRaises(ValueError):
-            # Use a completely made-up language code
-            self.engine.yes_or_no("question", "yes", "zz-ZZ")
+        """Test that truly unsupported languages return None."""
+        # Use a completely made-up language code that has no close match
+        res = self.engine.yes_or_no("question", "yes", "zz-ZZ")
+        self.assertIsNone(res, "Unsupported language should return None")

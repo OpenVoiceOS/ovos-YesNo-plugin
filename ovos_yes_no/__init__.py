@@ -22,7 +22,7 @@ class HeuristicYesNoEngine(YesNoEngine):
         for lang in os.listdir(locale):
             fname = f"{locale}/{lang}/yesno.json"
             if os.path.isfile(fname):
-                with open(fname) as f:
+                with open(fname, encoding="utf-8") as f:
                     lang = standardize_lang_tag(lang)
                     self.resources[lang] = json.load(f)
 
@@ -45,7 +45,15 @@ class HeuristicYesNoEngine(YesNoEngine):
         words = [w for w in word_tokenize(text) if w not in stopwords]
         return " ".join(words)
 
-    def _match_lang(self, lang: str) -> str:
+    def _match_lang(self, lang: str) -> Optional[str]:
+        """Find the best matching language in self.resources.
+
+        Args:
+            lang: Language tag to match
+
+        Returns:
+            Best matching language tag or None if no close match found
+        """
         lang = standardize_lang_tag(lang)
         if lang not in self.resources:
             best_lang = None
@@ -56,18 +64,25 @@ class HeuristicYesNoEngine(YesNoEngine):
                     best_lang = candidate
                     best_dist = dist
             if best_dist > 10:
-                raise ValueError(f"Unsupported language: {lang}")
+                return None
             lang = best_lang
         return lang
 
     def yes_or_no(self, question: str, response: str, lang: Optional[str] = None) -> Optional[bool]:
-        """
-        True: user answered yes
-        False: user answered no
-        None: invalid/neutral answer
+        """Evaluate whether a response means yes, no, or is neutral.
+
+        Args:
+            question: The yes/no question asked (used for context)
+            response: The user's response text to classify
+            lang: Language code (e.g., "en-us", "pt-pt"). Defaults to "en-us".
+
+        Returns:
+            True if response indicates yes, False if no, None if neutral/unclear
         """
         lang = lang or "en-us"
         lang = self._match_lang(lang)
+        if lang is None:
+            return None
         text = self.normalize(response, lang)
 
         # if user says yes but later says no, he changed his mind mid-sentence
@@ -75,11 +90,13 @@ class HeuristicYesNoEngine(YesNoEngine):
         res = None
         best = -1
 
-        # Compile regex patterns
+        # Compile regex patterns, guarding against empty lists
         yes_pattern = re.compile(r'\b(?:' + '|'.join(self.resources[lang]["yes"]) + r')\b')
         no_pattern = re.compile(r'\b(?:' + '|'.join(self.resources[lang]["no"]) + r')\b')
-        neutral_yes_pattern = re.compile(r'\b(?:' + '|'.join(self.resources[lang].get("neutral_yes", [])) + r')\b')
-        neutral_no_pattern = re.compile(r'\b(?:' + '|'.join(self.resources[lang].get("neutral_no", [])) + r')\b')
+        neutral_yes_words = self.resources[lang].get("neutral_yes", [])
+        neutral_no_words = self.resources[lang].get("neutral_no", [])
+        neutral_yes_pattern = re.compile(r'\b(?:' + '|'.join(neutral_yes_words) + r')\b') if neutral_yes_words else None
+        neutral_no_pattern = re.compile(r'\b(?:' + '|'.join(neutral_no_words) + r')\b') if neutral_no_words else None
 
         # Match yes words
         for match in yes_pattern.finditer(text):
@@ -107,7 +124,7 @@ class HeuristicYesNoEngine(YesNoEngine):
                     res = False
 
         # Match neutral no (if no "yes" detected before)
-        if res is None:
+        if res is None and neutral_no_pattern:
             for match in neutral_no_pattern.finditer(text):
                 idx = match.start()
                 if idx >= best:
@@ -115,7 +132,7 @@ class HeuristicYesNoEngine(YesNoEngine):
                     res = False
 
         # Match neutral yes (if no "no" detected before)
-        if res is None:
+        if res is None and neutral_yes_pattern:
             for match in neutral_yes_pattern.finditer(text):
                 idx = match.start()
                 if idx >= best:
