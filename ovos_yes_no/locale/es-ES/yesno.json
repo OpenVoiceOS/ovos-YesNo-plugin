@@ -10,7 +10,5 @@
     "negativo",
     "nah"
   ],
-  "neutral_yes": [
-    "por favor"
-  ]
+  "neutral_yes": ["por favor"]
 }
