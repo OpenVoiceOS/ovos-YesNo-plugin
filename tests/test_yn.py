@@ -1,30 +1,49 @@
 import os.path
 import unittest
 import json
-from ovos_yes_no_solver import YesNoSolver
+from ovos_yes_no_solver import HeuristicYesNoEngine
 
 
 class TestYesNo(unittest.TestCase):
+    """Unit tests for HeuristicYesNoEngine."""
+
     def setUp(self):
-        self.solver = YesNoSolver()
+        """Initialize the engine and load test data."""
+        self.engine = HeuristicYesNoEngine()
         # Load the test data from the JSON file
         with open(os.path.join(os.path.dirname(__file__), "test_sentences_en.json"), "r") as f:
             self.test_data = json.load(f)
 
-    def test_yesno(self):
-        def test_utt(text, expected):
-            res = self.solver.match_yes_or_no(text, "en-us")
-            print(text, expected, res)
-            self.assertEqual(res, expected)
-
-        # Test "yes" cases
+    def test_yes_responses(self):
+        """Test that yes sentences are correctly identified."""
         for sentence in self.test_data["yes"]:
-            test_utt(sentence, True)
+            with self.subTest(sentence=sentence):
+                res = self.engine.yes_or_no("question", sentence, "en-us")
+                self.assertTrue(res, f"Expected True for '{sentence}'")
 
-        # Test "no" cases
+    def test_no_responses(self):
+        """Test that no sentences are correctly identified."""
         for sentence in self.test_data["no"]:
-            test_utt(sentence, False)
+            with self.subTest(sentence=sentence):
+                res = self.engine.yes_or_no("question", sentence, "en-us")
+                self.assertFalse(res, f"Expected False for '{sentence}'")
 
-        # Test "null" cases
+    def test_null_responses(self):
+        """Test that neutral sentences return None."""
         for sentence in self.test_data["null"]:
-            test_utt(sentence, None)
+            with self.subTest(sentence=sentence):
+                res = self.engine.yes_or_no("question", sentence, "en-us")
+                self.assertIsNone(res, f"Expected None for '{sentence}'")
+
+    def test_language_fallback(self):
+        """Test that unsupported language variants fall back to closest match."""
+        # en-AU should fall back to en-us
+        res_au = self.engine.yes_or_no("question", "yes", "en-AU")
+        res_us = self.engine.yes_or_no("question", "yes", "en-us")
+        self.assertEqual(res_au, res_us, "en-AU should fall back to en-us")
+
+    def test_unsupported_language(self):
+        """Test that truly unsupported languages raise ValueError."""
+        with self.assertRaises(ValueError):
+            # Use a completely made-up language code
+            self.engine.yes_or_no("question", "yes", "zz-ZZ")

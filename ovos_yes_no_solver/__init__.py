@@ -4,6 +4,7 @@ import re
 from typing import Optional, List
 from ovos_plugin_manager.templates.agents import YesNoEngine
 from ovos_utils.lang import standardize_lang_tag
+from langcodes import tag_distance
 from quebra_frases import word_tokenize
 
 
@@ -48,6 +49,21 @@ class HeuristicYesNoEngine(YesNoEngine):
         words = [w for w in word_tokenize(text) if w not in stopwords]
         return " ".join(words)
 
+    def _match_lang(self, lang: str) -> str:
+        lang = standardize_lang_tag(lang)
+        if lang not in self.resources:
+            best_lang = None
+            best_dist = 10000000
+            for candidate in self.resources.keys():
+                dist = tag_distance(lang, candidate)
+                if dist < best_dist:
+                    best_lang = candidate
+                    best_dist = dist
+            if best_dist > 10:
+                raise ValueError(f"Unsupported language: {lang}")
+            lang = best_lang
+        return lang
+
     def yes_or_no(self, question: str, response: str, lang: Optional[str] = None) -> Optional[bool]:
         """
         True: user answered yes
@@ -55,11 +71,7 @@ class HeuristicYesNoEngine(YesNoEngine):
         None: invalid/neutral answer
         """
         lang = lang or "en-us"
-        lang = standardize_lang_tag(lang)
-
-        if lang not in self.resources:
-            return None
-
+        lang = self._match_lang(lang)
         text = self.normalize(response, lang)
 
         # if user says yes but later says no, he changed his mind mid-sentence
@@ -123,4 +135,4 @@ class HeuristicYesNoEngine(YesNoEngine):
 if __name__ == "__main__":
     cfg = {}
     bot = HeuristicYesNoEngine(config=cfg)
-    print(bot.yes_or_no("The sun is blue", "disagree"))
+    print(bot.yes_or_no("The sun is blue", "disagree", lang="en-AU"))
