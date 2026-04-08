@@ -41,7 +41,7 @@ class HeuristicYesNoEngine(YesNoEngine):
 
         return " ".join(word_tokenize(text))
 
-    def _match_lang(self, lang: str) -> Optional[str]:
+    def _match_lang(self, lang: str) -> str:
         """Find the best matching language in self.resources.
 
         Args:
@@ -77,8 +77,6 @@ class HeuristicYesNoEngine(YesNoEngine):
         """
         lang = lang or "en-US"
         lang = self._match_lang(lang)
-        if lang is None:
-            return None
         text = self.normalize(response, lang)
 
         # if user says yes but later says no, he changed his mind mid-sentence
