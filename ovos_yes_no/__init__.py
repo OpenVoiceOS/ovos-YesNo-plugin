@@ -57,14 +57,14 @@ class HeuristicYesNoEngine(YesNoEngine):
         lang = standardize_lang_tag(lang)
         if lang not in self.resources:
             best_lang = None
-            best_dist = 10000000
+            best_dist = 100000
             for candidate in self.resources.keys():
                 dist = tag_distance(lang, candidate)
                 if dist < best_dist:
                     best_lang = candidate
                     best_dist = dist
             if best_dist > 10:
-                return None
+                raise ValueError(f"Unsupported language: {lang!r}. Available: {list(self.resources.keys())}")
             lang = best_lang
         return lang
 
