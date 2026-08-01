@@ -107,7 +107,7 @@ engine = HeuristicYesNoEngine(config={"lang": "de-de"})
 
 ## Algorithm
 
-Source: `HeuristicYesNoEngine.yes_or_no` — `ovos_yes_no/__init__.py:71`
+Source: [`HeuristicYesNoEngine.yes_or_no`](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/blob/460adea31e1f656f97a04613f7e3a125f338289f/ovos_yes_no/__init__.py#L67-L114)
 
 The engine scans the normalised response against a per-language
 `locale/<lang>/yesno.json` resource file containing four word lists:
@@ -148,17 +148,22 @@ described above:
   of "yes" (e.g., French `"bien sur"`, Portuguese `"claro"`).
 - `neutral_no`: words that imply disapproval indirectly (e.g., French
   `"mensonge"`, Portuguese `"errado"`).
-- Double-negative structures vary widely between languages — test them
+- Double-negative structures vary widely between languages. Test them
   explicitly.
 
 ## Limitations
 
 - No sarcasm or idiom detection.
-- Vocabulary is limited to the words in the resource files; unlisted slang is
+- Vocabulary is limited to the words in the resource files. Unlisted slang is
   ignored.
 - Complex nested negations beyond one level may yield incorrect results.
 - Missing or incomplete resource files cause the engine to return `None` for
   that language rather than raising an error.
+
+## Related Projects
+
+- [OpenVoiceOS/ovos-workshop](https://github.com/OpenVoiceOS/ovos-workshop) — the skill base class that calls this plugin through `ask_yesno()`.
+- [OpenVoiceOS/ovos-plugin-manager](https://github.com/OpenVoiceOS/ovos-plugin-manager) — loads this plugin by name at runtime.
 
 ## License
 

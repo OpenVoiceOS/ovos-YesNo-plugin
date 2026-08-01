@@ -1,12 +1,20 @@
 # Changelog
 
-## [Unreleased](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/HEAD)
+## [0.3.1a2](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/0.3.1a2) (2026-08-01)
 
-[Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/8a36d59d4d771b336ead672d8341539802197c32...HEAD)
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/0.3.1a1...0.3.1a2)
 
 **Merged pull requests:**
 
-- feat: modernize YesNo plugin to current OVOS standards [\#1](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/pull/1) ([JarbasAl](https://github.com/JarbasAl))
+- docs: rewrite README in Simplified Technical English [\#4](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/pull/4) ([JarbasAl](https://github.com/JarbasAl))
+
+## [0.3.1a1](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/0.3.1a1) (2026-04-08)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/0.3.0...0.3.1a1)
+
+**Merged pull requests:**
+
+- refactor: drop stopwords [\#2](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/pull/2) ([JarbasAl](https://github.com/JarbasAl))
 
 
 
