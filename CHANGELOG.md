@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0a1](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/0.4.0a1) (2026-08-30)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/0.3.1a2...0.4.0a1)
+
+**Merged pull requests:**
+
+- feat: add Kabyle \(kab-DZ\) yes/no vocabulary [\#6](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/pull/6) ([JarbasAl](https://github.com/JarbasAl))
+
 ## [0.3.1a2](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/0.3.1a2) (2026-08-01)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/0.3.1a1...0.3.1a2)
