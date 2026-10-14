@@ -1,0 +1,52 @@
+{
+  "yes": [
+    "si",
+    "sí",
+    "claro",
+    "vale",
+    "por suposto",
+    "(confirmo|confirmado|confirmada|confirmados|confirmadas)",
+    "(afirmativo|afirmativa|así é)",
+    "(correcto|correcta|correctos|correctas)",
+    "entendido",
+    "faino",
+    "adiante"
+  ],
+  "no": [
+    "non",
+    "negativo",
+    "(nada diso|de ningún xeito|de ningunha maneira)",
+    "(en desacordo|non estou dacordo|non estou de acordo)",
+    "(nooon|nooooon)"
+  ],
+  "neutral_yes": [
+    "por favor",
+    "seguro",
+    "(sen dúbida|sen ningunha dúbida)",
+    "(evidentemente|obviamente)",
+    "(apropiado|apropiada|axeitado|axeitada)",
+    "de feito"
+  ],
+  "neutral_no": [
+    "desexable",
+    "inadecuado",
+    "inadecuada",
+    "inapropiado",
+    "inapropiada",
+    "minte",
+    "minto",
+    "menten",
+    "mentira",
+    "mentiras",
+    "erro",
+    "erros",
+    "equivocado",
+    "equivocada",
+    "equivocados",
+    "equivocadas",
+    "errado",
+    "errada",
+    "incorrecto",
+    "incorrecta"
+  ]
+}
