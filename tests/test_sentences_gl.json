@@ -1,0 +1,35 @@
+{
+  "yes": [
+    "si",
+    "sí",
+    "si, por favor",
+    "claro",
+    "claro que si",
+    "vale",
+    "correcto",
+    "por suposto",
+    "si, faino",
+    "non, mellor si",
+    "non é mentira",
+    "non está equivocado"
+  ],
+  "no": [
+    "non",
+    "non, grazas",
+    "non o fagas",
+    "de ningún xeito",
+    "nada diso",
+    "non estou dacordo",
+    "si, mellor non",
+    "negativo",
+    "é mentira",
+    "iso é un erro",
+    "resposta incorrecta"
+  ],
+  "null": [
+    "fabas",
+    "que hora é",
+    "dacordo",
+    "de acordo"
+  ]
+}
