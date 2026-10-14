@@ -24,7 +24,8 @@ class HeuristicYesNoEngine(YesNoEngine):
             if os.path.isfile(fname):
                 with open(fname, encoding="utf-8") as f:
                     lang = standardize_lang_tag(lang)
-                    self.resources[lang] = json.load(f)
+                    # normalize() lowercases the response, so the word lists must be lowercase too
+                    self.resources[lang] = {key: [w.lower() for w in words] for key, words in json.load(f).items()}
 
     @staticmethod
     def normalize(text: str, lang: str):
@@ -92,9 +93,12 @@ class HeuristicYesNoEngine(YesNoEngine):
         neutral_yes_pattern = re.compile(r'\b(?:' + '|'.join(neutral_yes_words) + r')\b') if neutral_yes_words else None
         neutral_no_pattern = re.compile(r'\b(?:' + '|'.join(neutral_no_words) + r')\b') if neutral_no_words else None
 
-        # Match yes words
+        # Match yes words, except inside a "no" phrase: "sono d'accordo" within "non sono d'accordo"
+        no_spans = [m.span() for m in no_pattern.finditer(text)]
         for match in yes_pattern.finditer(text):
             idx = match.start()
+            if any(start <= idx and match.end() <= end for start, end in no_spans):
+                continue
             if idx >= best:
                 best = idx
                 res = True
