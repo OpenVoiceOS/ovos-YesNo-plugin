@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1a1](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/0.4.1a1) (2026-10-20)
+
+[Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/0.4.0a1...0.4.1a1)
+
+**Merged pull requests:**
+
+- fix: allow ovos-plugin-manager 3 [\#10](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/pull/10) ([openvoiceos-bot](https://github.com/openvoiceos-bot))
+- feat: add Galician yesno.json [\#8](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/pull/8) ([mikejgray](https://github.com/mikejgray))
+
 ## [0.4.0a1](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/tree/0.4.0a1) (2026-08-30)
 
 [Full Changelog](https://github.com/OpenVoiceOS/ovos-YesNo-plugin/compare/0.3.1a2...0.4.0a1)
